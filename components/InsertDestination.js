@@ -37,8 +37,8 @@ export default class InsertDestination extends Component {
     var place = this.state.place;
     var day = this.state.day;
     var image = this.state.image;
-
-        destinationList.write(() => {
+        if(title && place && day && image){
+            destinationList.write(() => {
                 destinationList.create('DestinationList', 
                     {
                         title: String(title), 
@@ -49,12 +49,15 @@ export default class InsertDestination extends Component {
                     }
                 );
             })
-        this.props.navigator.pop();
+            this.props.navigator.pop();
+        } else {
+            AlertIOS.alert('Error, some fields are empty');
+        }
     }
     render(){
         return (
             <View style={{flex: 1}}>
-                <NavBar iconTouch={() => this._backButton()} icon="times" orange title="Add New"/>
+                <NavBar iconTouchLeft={() => this._backButton()} colorIcon="#fff" icon="times" orange title="Add New"/>
                 <View style={styles.container}>
                     <View style={styles.inputs}>
                         <TextInput 

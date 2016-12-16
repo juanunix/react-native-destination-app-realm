@@ -15,11 +15,21 @@ export default class NavBar extends Component {
         } else {
             bgColor = 'transparent';
         }
+        var rightIcons;
+        if(this.props.enableRightIcon){
+            rightIcons = <TouchableHighlight underlayColor="transparent" onPress={this.props.iconTouchRight}>
+                            <Icon 
+                                style={styles.icon} 
+                                name={this.props.iconRight} 
+                                size={20} 
+                                color={this.props.colorIconRight} />
+                        </TouchableHighlight>
+        }
         return (
             <View style={[styles.navbar, {backgroundColor:bgColor}]}>
                 <View style={styles.contentNav}>
-                    <View style={styles.contentIcon}>
-                        <TouchableHighlight onPress={this.props.iconTouch}>
+                    <View style={styles.contentIconLeft}>
+                        <TouchableHighlight underlayColor="transparent" onPress={this.props.iconTouchLeft}>
                             <Icon 
                                 style={styles.icon} 
                                 name={this.props.icon} 
@@ -31,6 +41,9 @@ export default class NavBar extends Component {
                         <Text style={styles.navBarTextTitle}>
                             {this.props.title}
                         </Text>
+                    </View>
+                    <View style={styles.contentIconRight}>
+                        {rightIcons}
                     </View>
                 </View>
             </View>
@@ -52,16 +65,35 @@ const styles = StyleSheet.create({
         flex: 2,
         justifyContent: 'space-between'
     },
-    contentIcon: {
-        flex: 2,
-        flexDirection: 'row',
+    contentIconLeft: {
+        position: 'absolute',
+        left: 0,
+        top: 20,
+        zIndex: 20
+    },
+    contentIconRight: {
+        position: 'absolute',
+        right: 0,
+        top: 20,
+        zIndex: 20
     },
     contentText: {
-        flex: 3,
-        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     navBarTextTitle: {
         color: 'white',
-        fontSize: 15
+        fontSize: 18,
+        fontWeight: "700"
     }
 })
+
+NavBar.propTypes = {
+    iconRight: React.PropTypes.string,
+    iconTouchRight: React.PropTypes.func,
+    title: React.PropTypes.string.isRequired,
+    colorIcon: React.PropTypes.string,
+    icon: React.PropTypes.string,
+    orange: React.PropTypes.bool
+}

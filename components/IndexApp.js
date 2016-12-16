@@ -17,8 +17,12 @@ import {
   ListView,
   Navigator,
   TouchableHighlight,
-  AlertIOS
+  AlertIOS,
+  RefreshControl
 } from 'react-native';
+
+import Realm from 'realm'
+import destinationList from '../models/todoListModel'
 
 
 
@@ -28,8 +32,16 @@ export default class IndexApp extends Component {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}); 
 
     this.state = {
-      dataSource: ds.cloneWithRows(this._arrayOfComponents())
+      dataSource: ds.cloneWithRows(this.queryData()),
+      refreshing: false
     }
+  }
+  _onRefresh(){
+    this.setState({refreshing: true});
+       this.setState({
+        refreshing: false,
+        dataSource: this.state.dataSource.cloneWithRows(this.queryData())
+      });
   }
   setNativeProps(nativeProps){
     this._root.setNativeProps(nativeProps)
@@ -39,6 +51,7 @@ export default class IndexApp extends Component {
     for(var i = 0; i < LocalStorage.events.length; i++){
       componentList.push(LocalStorage.events[i]);
     }
+    console.log(componentList);
     return componentList;
   }
   _touchIconAlert(){
@@ -47,19 +60,37 @@ export default class IndexApp extends Component {
     })
   }
   renderScene(){
-    console.log('it works');
+    console.log('this works');
+  }
+  queryData(){
+    var dataList = [];
+    let all = destinationList.objects('DestinationList');
+    for(var i = 0; i < all.length; i++){
+      dataList.push({
+        image: all[i].image,
+        title: all[i].title,
+        location: all[i].place,
+        numOfDays: all[i].day
+      })
+    }
+    return dataList;
   }
   render(){
-    //console.log(this._arrayOfComponents());
     return (
       <View style={styles.container}>
       <Navigator
-        style={{ flex:1 }}
+        style={{ flex: 1 }}
         initialRoute={{ name: 'Main' }}
         renderScene={ this.renderScene } 
       />
-        <NavBar iconTouch={() => this._touchIconAlert()} orange icon="align-left" colorIcon="#fff" title="Destination"/>
-        <ListView 
+        <NavBar iconTouchLeft={() => this._touchIconAlert()} orange icon="align-left" colorIcon="#fff" title="Destination"/>
+        <ListView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          } 
           enableEmptySections={true}
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}

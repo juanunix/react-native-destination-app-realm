@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     Image,
-    ScrollView
+    ScrollView,
+    AlertIOS
 } from 'react-native'
 import NavBar from './NavBar'
 import Realm from 'realm'
@@ -18,43 +19,45 @@ export default class DestinationView extends Component {
         this.props.navigator.pop();
     }
     render(){
-        let all = destinationList.objects('DestinationList');
-        let s = JSON.stringify(all);
+        var data = JSON.stringify(this.props.data)
         return (
-            <ScrollView style={styles.containerDestinationView}>
+            <View style={styles.container}>
+                <NavBar 
+                    enableRightIcon
+                    title={this.props.data.title} 
+                    orange 
+                    iconTouchLeft={() => this._backButton()} 
+                    colorIcon="#fff" icon="chevron-left" 
+                    colorIconRight ="#fff" iconRight="camera"
+                />
                 <Image
-                    source={{uri: this.props.data.image}} style={styles.imageView}>
-                    <NavBar iconTouch={() => this._backButton()} iconColor="#000" icon="chevron-left" />
-                    <Text>{this.props.data.title}</Text>
-                    <Text>{this.props.data.location}</Text>
-                    <Text>{this.props.data.numOfDays} days later</Text>
+                    style={[styles.header, this.border('red')]}
+                    source={{uri: this.props.data.image}}>
                 </Image>
-                <View style={styles.contentDestinationView}>
-                    <Text>Count of Destinations {s}</Text>
+                <View style={[styles.footer, this.border('blue')]}>
+                    <Text>Count of Destinations {data}</Text>
                 </View>
-            </ScrollView>
+            </View>
         )
+    }
+    border(color){
+        return {
+            borderColor: color,
+            borderWidth: 4
+        }
     }
 }
 
 const styles = StyleSheet.create({
-    containerDestinationView: {
+    container: {
         flex: 1,
-        height: window.height
+        alignItems: 'stretch'
     },
-    /* 
-    	border-bottom: 100px solid red;
-        border-left: 50px solid transparent;
-        border-right: 50px solid transparent;
-        height: 0;
-        width: 100px;
-    */
-    imageView: {
-        width: window.width,
-        height: 320,
+    header: {
+        flex: 1
     },
-    contentDestinationView: {
-        backgroundColor: 'skyblue',
-        height: window.height
+    footer: {
+        flex: 1,
+        backgroundColor: 'white'
     }
 })
