@@ -9,6 +9,7 @@ import React, { Component } from 'react'
 import IndexApp from './components/IndexApp'
 import DestinationView from './components/DestinationView'
 import InsertDestination from './components/InsertDestination'
+import TakeAPhoto from './components/TakeAPhoto'
 
 import {
   AppRegistry,
@@ -41,6 +42,10 @@ export default class awesomeTodo extends Component {
           <InsertDestination 
             {...globalNavigatorProps}
           />
+        )
+      case "takeAPhoto":
+        return (
+          <
         )
     }
   }
