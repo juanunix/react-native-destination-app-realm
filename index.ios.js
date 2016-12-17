@@ -43,9 +43,11 @@ export default class awesomeTodo extends Component {
             {...globalNavigatorProps}
           />
         )
-      case "takeAPhoto":
+      case "TakeAPhoto":
         return (
-          <
+          <TakeAPhoto 
+            {...globalNavigatorProps}
+          />
         )
     }
   }

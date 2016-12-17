@@ -24,6 +24,8 @@ import {
 import Realm from 'realm'
 import destinationList from '../models/todoListModel'
 
+import Border from '../utils/styleBorders'
+
 
 
 export default class IndexApp extends Component {
@@ -77,14 +79,15 @@ export default class IndexApp extends Component {
   }
   render(){
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, Border('red')]}>
       <Navigator
         style={{ flex: 1 }}
         initialRoute={{ name: 'Main' }}
         renderScene={ this.renderScene } 
       />
-        <NavBar iconTouchLeft={() => this._touchIconAlert()} orange icon="align-left" colorIcon="#fff" title="Destination"/>
+        <NavBar style={[styles.navbarPosition, Border('blue')]} iconTouchLeft={() => this._touchIconAlert()} orange icon="align-left" colorIcon="#fff" title="Destination"/>
         <ListView
+          style={styles.containerListView}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -126,7 +129,7 @@ export default class IndexApp extends Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column'
+  containerListView: {
+    height: 200
   }
 })

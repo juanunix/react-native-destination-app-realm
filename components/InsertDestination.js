@@ -57,7 +57,12 @@ export default class InsertDestination extends Component {
     render(){
         return (
             <View style={{flex: 1}}>
-                <NavBar iconTouchLeft={() => this._backButton()} colorIcon="#fff" icon="times" orange title="Add New"/>
+                <NavBar 
+                    iconTouchLeft={() => this._backButton()} 
+                    colorIcon="#fff" 
+                    icon="times" 
+                    orange 
+                    title="Add New"/>
                 <View style={styles.container}>
                     <View style={styles.inputs}>
                         <TextInput 
